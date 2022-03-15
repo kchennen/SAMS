@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <TMPL_INCLUDE NAME="_header.tmpl" />
+    <link href="../sams/pikaday.css" rel="stylesheet" type="text/css">
+  </head>
+
+<body>
+  <form action="logout.cgi" id="form_logout" name="form_logout" method="post">
+  </form>
+
+  <form action="phenotype2db.cgi" id="form" name="form" method="post" onsubmit="return false" <TMPL_IF NAME="ONTHEFLY">target="_blank"</TMPL_IF>>
+    <TMPL_INCLUDE NAME="_transfer.tmpl" />
+    <INPUT TYPE="hidden" name="onthefly" value="<TMPL_VAR NAME=ONTHEFLY>">
+    <div class="topbar-outer">
+      <div class="topbar">
+        <DIV>
+          <A href="../sams/index.html">
+            <IMG class="logo" src="../sams/img/sams2.svg">
+          </A>
+        </DIV>
+        <div>
+          <div class="flex dualinp">
+            <div class="p-rel">
+              <input class="left-input ico-pad" type="text" placeholder="Search term" name="patientterm"
+                id="input_search">
+              <svg class="svg-icon svg-input" height="23" viewBox="3 3 24 24" width="23">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                </path>
+              </svg>
+            </div>
+            <div class="p-rel">
+              <input class="right-input ico-pad" type="text" placeholder="Visit date (YYYY-MM-DD)" name="date"
+                id="datepicker" required>
+              <svg class="svg-icon svg-input" height="19" viewBox="1 0 24 24" width="19">
+                <path
+                  d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+              </svg>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="flex-center">
+          <div class="sa-nav">
+            <a class="is-selected col1" id="source_hpo">HPO</a>
+            <a class="is-selected col2 ml8" id="source_orphanet">Orphanet</a>
+            <a class="is-selected col3 ml8" id="source_omim">OMIM</a>
+            <a class=" col4 ml8" id="source_alphaid">Alpha-ID</a>
+		      </div>
+        </div>
+        <!--<div class="flex-center">
+          <div class="mr16">
+            <span>User: <TMPL_VAR NAME></span>
+          </div>
+
+          <button class="mr16" type="submit" form="form_logout">Logout</button>
+        </div>-->
+      </div>
+    </div>
+
+    <div class="content">
+      <!-------------------------------------------------------------------------------- ASIDE -->
+      <aside>
+
+        <div class="extra <TMPL_UNLESS EXTERNAL_ID>d-none</TMPL_UNLESS>" id="div_prev">
+          <div class="output-header">
+            <h2>Patient: <TMPL_VAR NAME=EXTERNAL_ID></h2>
+            <div class="aside_showhide">
+              <svg class="svg-text d-none2" height="21" viewBox="4 1 20 20" width="21" onclick="aside_show(true)">
+                <path
+                  d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z" />
+              </svg>
+              <svg class="svg-text" width="19" height="19" viewBox="0 -1 18 18" onclick="aside_show(false)">
+                <path
+                  d="M5.02 9.44l-2.22 2.2C1.63 10.25 1 9 1 9s3-6 8.06-6c.75 0 1.46.14 2.12.38L9.5 5.03a4.01 4.01 0 0 0-4.48 4.41zm2.03 3.05A3.99 3.99 0 0 0 13 9c0-.73-.2-1.41-.54-2l-1.51 1.54a2 2 0 0 1-2.38 2.42l-1.52 1.53zm7.11-7.22A14.8 14.8 0 0 1 17 9s-3 6-7.94 6c-1.31 0-2.48-.4-3.5-1l-1.97 2L2 14.41 14.59 2 16 3.41l-1.84 1.86z">
+                </path>
+              </svg>
+            </div>
+          </div>
+
+          <div class="grid mt16 gc-3e patient-box">
+            <!--<div>ID:</div>
+            <div><b>
+                <TMPL_VAR NAME=EXTERNAL_ID>
+              </b>
+            </div>
+            <div><a href="index.cgi">Change</a></div>-->
+
+
+            <div>Previous visits:</div>
+            <div>
+              <TMPL_IF NAME="VCOUNT">
+                <TMPL_VAR NAME="VCOUNT">
+              <TMPL_ELSE>
+                None
+              </TMPL_IF>
+            </div>
+            <div>
+              <TMPL_IF NAME="VCOUNT">
+                <button type="submit" id="previous_visits" form="view_form">View</button>
+              </TMPL_IF>
+            </div>
+
+            <TMPL_IF NAME="VCOUNT">
+              <div>Last visit:</div>
+              <div>
+                <TMPL_VAR NAME="VDATE">
+              </div>
+              <div><a href="javascript:void(0)" onclick="GetLastVisit()">Copy terms</a></div>
+            </TMPL_IF>
+
+            <div>User:</div><!-- class="extra" -->
+            <div>
+              <TMPL_VAR NAME>
+            </div>
+            <div><a href="logout.cgi">Logout</a></div>
+
+
+
+            <!--<div class="pl-small d-ib p-rel"><button class="red-button p-abs" style="bottom:-8px" type="submit"
+                    form="form_logout">Logout</button></div>-->
+          </div>
+
+        </div>
+
+        <!-- Content populated by JavaScript. -->
+        <div id="div_output"></div>
+        <div id="div_previous"></div>
+        <!-- End. -->
+
+        <!-- Content template. Remove class d-none to edit. -->
+        <div id="div_template_output" class="d-none">
+          <div class="output-inner pt48">
+            <div class="output-header">
+              <h2>
+                Selection
+              </h2>
+              <a class="btn-inactive" onclick="results_switchtext()">
+                <svg class="svg-text" height="19" viewBox="0 0 24 24" width="19">
+                  <path
+                    d="M15 1H4c-1.1 0-2 .9-2 2v13c0 .55.45 1 1 1s1-.45 1-1V4c0-.55.45-1 1-1h10c.55 0 1-.45 1-1s-.45-1-1-1zm.59 4.59l4.83 4.83c.37.37.58.88.58 1.41V21c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h6.17c.53 0 1.04.21 1.42.59zM15 12h4.5L14 6.5V11c0 .55.45 1 1 1z" />
+                </svg>
+                <svg class="svg-text d-none" height="19" width="19" viewBox="0 0 454.839 454.839">
+                  <path d="M404.908,283.853c0,94.282-76.71,170.986-170.986,170.986h-60.526c-10.03,0-18.158-8.127-18.158-18.157v-6.053 c0-10.031,8.127-18.158,18.158-18.158h60.526c70.917,0,128.618-57.701,128.618-128.618c0-70.917-57.701-128.618-128.618-128.618 H122.255l76.905,76.905c8.26,8.257,8.26,21.699,0,29.956c-8.015,8.009-21.964,7.997-29.961,0L56.137,149.031 c-4.001-4.001-6.206-9.321-6.206-14.981c0-5.656,2.205-10.979,6.206-14.978L169.205,6.002c7.997-8.003,21.958-8.003,29.956,0 c8.26,8.255,8.26,21.699,0,29.953l-76.905,76.911h111.666C328.198,112.866,404.908,189.573,404.908,283.853z"/>
+                </svg>
+              </a>
+            </div>
+            <div class="fd-column mt16">
+              <span class="sa-link">
+                No selection made.
+              </span>
+            </div>
+
+            <table class="sa-table pl-table mt8">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2">Description</th>
+                  <th scope="col">Modify</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" class="show-only" data-state="2"></td>
+                  <td>Abnormality of head or neck <span class="badge">jquery</span></td>
+                  <td>
+                    <a>
+                      <svg class="svg-text" height="19" viewBox="0 0 24 24" width="19" onclick="result_modify()">
+                        <path
+                          d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                      </svg>
+                    </a>
+                    <a>
+                      <svg class="svg-text" width="19" height="19" viewBox="0 0 24 24" onclick="result_cancel()">
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z" />
+                      </svg>
+                    </a>
+                    <a>
+                      <svg class="svg-text" width="18" height="18" viewBox="0 0 18 18">
+                        <path d="M10.58 16L12 14.59 6.4 9 12 3.41 10.57 2l-7 7 7 7z"></path>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>Abnormality of head or neck</td>
+                  <td>H.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <textarea class="d-none mt16" placeholder="" rows="12" name="phenotypeboxarea"
+              onchange="phenotypeboxarea_change()" onblur="results_parse()"></textarea>
+            <div class="errortext" id="err"></div>
+            <button class="mt32 mr16 green-button">Fertig.</button>
+            <a class="ml-med med mt32" href="javascript:void(0)" style="padding-top:4px;" onclick="clear_form()">Reset</a>
+          </div>
+        </div>
+
+        <label>
+        <table class="sa-table pl-table extra">
+          <tbody>
+            <tr>
+              <td><INPUT class="normal-cb show-only-format" id="experimental_features" type="checkbox" name="experimental_features"
+                value="1" <TMPL_IF name="EXPERIMENTAL_FEATURES">checked</TMPL_IF> onchange="get_prediction()"></td>
+              <td>Enable experimental features (not documented)</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+       </label>
+      </aside>
+
+      <!-------------------------------------------------------------------------------- MAIN -->
+      <div class="main">
+        <p></p> <!-- Status message. Must preced div_symptoms. -->
+        <div id="div_symptoms">
+        </div>
+
+        <!-- Template table. -->
+        <div id="div_template_table" class="d-none">
+          <section>
+            <div class="section-header">
+              <h2>
+                <span class="pe-auto">(Source)</span>
+                <span class="pe-auto">(Source) - Keine Ergebnisse</span>
+              </h2>
+              <a class="link-button pe-auto" href="#top">
+                <svg class="svg-icon" height="26" viewBox="0 0 24 24" width="26">
+                  <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
+                  <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+              </a>
+            </div>
+
+            <p class="fs16">
+            <table class="sa-table">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <input type="checkbox" onchange="hits_cbchangeall()">
+                  </th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="checkbox" onchange="hits_cbchange()">
+                  </td>
+                  <td>Abnormality of head or neck</td>
+                  <td>
+                    <ul>
+                      <li>List item 1</li>
+                      <li>List item 2</li>
+                      <li>List item 3</li>
+                      <li>List item 4</li>
+                      <li>List item 5</li>
+                    </ul>
+                  </td>
+                  <td>
+                    <a>
+                      <svg class="svg-icon" height="19" viewBox="4 1 20 20" width="19" onclick="hpo_ajaxrefine()">
+                        <path
+                          d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z" />
+                      </svg>
+                      <svg class="svg-icon" width="17" height="17" viewBox="0 -1 18 18" onclick="hpo_collapse()">
+                        <path
+                          d="M5.02 9.44l-2.22 2.2C1.63 10.25 1 9 1 9s3-6 8.06-6c.75 0 1.46.14 2.12.38L9.5 5.03a4.01 4.01 0 0 0-4.48 4.41zm2.03 3.05A3.99 3.99 0 0 0 13 9c0-.73-.2-1.41-.54-2l-1.51 1.54a2 2 0 0 1-2.38 2.42l-1.52 1.53zm7.11-7.22A14.8 14.8 0 0 1 17 9s-3 6-7.94 6c-1.31 0-2.48-.4-3.5-1l-1.97 2L2 14.41 14.59 2 16 3.41l-1.84 1.86z">
+                        </path>
+                      </svg>
+                    </a>
+                  </td>
+                  <td><a>HPO:01123574</a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="checkbox">
+                  </td>
+                  <td>Abnormality of head or neck</td>
+                  <td>Head and neck abnormality</td>
+                  <td>Verfeinern</td>
+                  <td><a>HPO:01123574</a></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="sa-table">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <input type="checkbox" onchange="hits_cbchangeall()">
+                  </th>
+                  <th colspan=3 scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan=2>
+                    <input type="checkbox" onchange="hits_cbchange()">
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td rowspan=2>Abnormality of head or neck</td>
+                  <td rowspan=2>Head and neck abnormality</td>
+                  <td rowspan=2>Verfeinern</td>
+                  <td rowspan=2><a>HPO:01123574</a></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+
+            </p>
+            <div class="fl1 suffix-msg">
+              <p>Display limited to 200 entries, please refine your search.</p>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </form>
+    <form id="view_form" name="view_form" action="previous_visits.cgi" method="post" style="display: none;">
+        <TMPL_INCLUDE NAME="_transfer.tmpl" />
+    </form>
+
+  <textarea id="cgi_transfer" class="d-none"><TMPL_VAR NAME=PHENOTYPEBOXAREA /></textarea>
+  <textarea id="cgi_transfer2" class="d-none"><TMPL_VAR NAME=DATE /></textarea>
+  <textarea id="cgi_transfer3" class="d-none"><TMPL_VAR NAME=PATIENTTERM /></textarea>
+  <script src="../sams/autoc.js?v=1"></script>
+  <script src="../sams/pikaday.js"></script>
+  <script>
+    var picker = new Pikaday({
+      field: document.getElementById('datepicker'),
+      format: 'YYYY-MM-DD',
+      toString(date, format) {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+      },
+      parse(dateString, format) {
+        const parts = dateString.split('-');
+        const day = parseInt(parts[2], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[0], 10);
+        return new Date(year, month, day);
+      }
+    });
+  </script>
+</body>
+
+</html>

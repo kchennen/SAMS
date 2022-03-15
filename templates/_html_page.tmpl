@@ -1,0 +1,55 @@
+
+
+<!DOCTYPE html>
+<HTML>
+<head>
+	<TMPL_INCLUDE NAME="_header.tmpl" />
+</head>
+
+<body>
+	<TMPL_INCLUDE NAME="_topbar.tmpl" />
+
+	<DIV class="centering-content <TMPL_VAR CSS_ANCHOR>">
+		<DIV class="centering-inner">
+
+			<TMPL_IF WARNING>
+				<p>
+					<TMPL_VAR WARNING>
+				</p>
+			</TMPL_IF>
+
+			<TMPL_VAR HTML>
+
+			<TMPL_IF DELETE_SHOW_CONFIRM>
+				<form class="extra" action="delete_account.cgi" method="post">
+					<INPUT TYPE="hidden" name="confirmed" value="1">
+					<button class="red-button" type="submit">Yes</button>
+				</form>
+			</TMPL_IF>
+
+			<TMPL_IF IMPORT_WELCOME>
+				<FORM action="import_phenopacket.cgi" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="confirmed" value="1">
+					<INPUT type="file" name="filename">
+						<div class="extra">
+							<button class="green-button" type="submit">Submit</button>
+						</div>
+
+						<p><a class="doculinks" href="https://genecascade.org/downloads/SAMS/examples/">Examples</a></p>
+				</FORM>
+			</TMPL_IF>
+
+			<div class="extra">
+				<!--<a href="javascript:history.back()">Go back</a>-->
+				<a href="index.cgi">Go back</a>
+			</div>
+
+		</DIV>
+	</DIV>
+	
+	<TMPL_INCLUDE NAME="_doculinks.tmpl" />
+</BODY>
+
+</HTML>
+
+

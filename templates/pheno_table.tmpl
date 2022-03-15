@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<HTML>
+
+<head>
+  <TMPL_INCLUDE NAME="_header.tmpl" />
+</head>
+
+<body>
+  <TMPL_INCLUDE NAME="_topbar.tmpl" />
+
+  <DIV class="centering-content">
+    <DIV class="centering-inner">
+
+      <TMPL_IF WARNING>
+        <p>
+          <TMPL_VAR WARNING>
+        </p>
+      </TMPL_IF>
+
+      <TMPL_UNLESS SYMPS_ARR>
+        <p>No examination has been recorded yet.</p>
+
+        <TMPL_ELSE>
+
+          <TABLE class="sa-table mp-table" id="table">
+            <TR>
+              <TH>Visit date</TH>
+              <TH>Records</TH>
+              <TH>
+                <TMPL_IF PREVIOUS_VISITS>
+                <TMPL_IF OWN_PATIENT>Modify</TMPL_IF>
+                </TMPL_IF>
+                <TMPL_IF PHENOTYPE_TO_DB>IDs</TMPL_IF>
+              </TH>
+            </TR>
+            <TMPL_LOOP NAME="SYMPS_ARR">
+              <tr>
+                <TD>
+                  <TMPL_VAR DATE><br>
+                </TD>
+                <TD>
+                  <TMPL_IF PREVIOUS_VISITS>
+                   
+                    <a class="svg-text">
+                      <svg class="svg-icon" height="19" viewBox="4 1 20 20" width="19"
+                           onclick="previous_visits_expand(this, true)">
+                        <path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z">
+                        </path>
+                      </svg>
+                      
+                      <svg class="svg-icon d-none" width="17" height="17" viewBox="0 -1 18 18"
+                           onclick="previous_visits_expand(this, false)">
+                        <path d="M5.02 9.44l-2.22 2.2C1.63 10.25 1 9 1 9s3-6 8.06-6c.75 0 1.46.14 2.12.38L9.5 5.03a4.01 4.01 0 0 0-4.48 4.41zm2.03 3.05A3.99 3.99 0 0 0 13 9c0-.73-.2-1.41-.54-2l-1.51 1.54a2 2 0 0 1-2.38 2.42l-1.52 1.53zm7.11-7.22A14.8 14.8 0 0 1 17 9s-3 6-7.94 6c-1.31 0-2.48-.4-3.5-1l-1.97 2L2 14.41 14.59 2 16 3.41l-1.84 1.86z">
+                        </path>
+                      </svg>
+                      
+                    </a>
+                    
+                  </TMPL_IF>
+                </TD>
+                <TD>
+                  <TMPL_IF PREVIOUS_VISITS>
+                     <TMPL_IF OWN_PATIENT>
+                    <svg class="svg-icon" height="19" viewBox="0 0 24 24" width="19"
+                         onclick="previous_visits_edit(this)">
+                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                      </path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                    <form action="enter_phenotype.cgi" method="post">
+                      <TMPL_INCLUDE NAME="_transfer.tmpl" />
+                      <input type="hidden" name="date" value="<TMPL_VAR NAME=date />" />
+                      <textarea class="v-hide" name="phenotypeboxarea"><TMPL_VAR SYMPS_STR></textarea>
+                    </form>
+                  </TMPL_IF>
+                     </TMPL_IF>
+                </TD>
+              </tr>
+
+              <TMPL_LOOP NAME="symps">
+                <tr class="is-disabled expand <TMPL_IF PREVIOUS_VISITS>d-none</TMPL_IF>">
+                  <td class="is-enabled">
+                    <TMPL_VAR SYMPS_DATE>
+                  </td>
+                  <td class="is-enabled">
+                    <input type="checkbox" class="show-only" data-state="<TMPL_VAR STATUS />">
+                    <TMPL_VAR TERM />
+                    <TMPL_IF PHENOTYPE_TO_DB>
+                      <TMPL_IF COL2>
+                        <br>
+                        <i>
+                          <TMPL_VAR NAME=COL2 />
+                        </i>
+                      </TMPL_IF>
+                      <TMPL_IF COL>
+                        <br>
+                        <i>
+                          <TMPL_VAR NAME=COL />
+                        </i>
+                      </TMPL_IF>
+                    </TMPL_IF>
+                  </td>
+                  <td class="is-enabled">
+                    <TMPL_VAR ID />
+                  </td>
+                </tr>
+              </TMPL_LOOP>
+
+            </TMPL_LOOP>
+      </TMPL_UNLESS>
+      </TABLE>
+
+      <div>&nbsp;</div>
+
+      <TMPL_IF PREVIOUS_VISITS>
+        <div class="extra">
+          <TMPL_IF OWN_PATIENT>
+          <FORM class="d-ib" action="enter_phenotype.cgi" method="post">
+            <TMPL_INCLUDE NAME="_transfer.tmpl" />
+            <button class='green-button big-button' type="submit" '>Add visit</button>
+          </FORM>
+           </TMPL_IF>
+          <TMPL_IF NAME="SYMPS_ARR">
+            <FORM class="ml-med d-ib" action="timecourse.cgi" method="post">
+              <TMPL_INCLUDE NAME="_transfer.tmpl" />
+              <button class=' green-button big-button' type="submit" '>Time course</button>
+            </FORM>
+          </TMPL_IF>
+					<TMPL_IF NAME=ROLEISPAT>
+						<div class="extra small">
+							<a href="delete_account.cgi">Delete account <TMPL_VAR NAME></a>
+						</div>
+					</TMPL_IF>
+        </div>
+      </TMPL_IF>
+
+      <TMPL_IF PHENOTYPE_TO_DB>
+        <TMPL_UNLESS NAME=CONFIRMED>
+          <div class="extra">
+            <TMPL_IF WRITE2DB>
+              <FORM class="d-ib mr-med" action="phenotype2db.cgi" method="post">
+                <input type='hidden' name="role" value="<TMPL_VAR NAME=ROLE />">
+                <input type='hidden' name="phenotypeboxarea" value="<TMPL_VAR NAME=PHENOTYPEBOXAREA />">
+                <input type='hidden' name="pat_no" value="<TMPL_VAR NAME=PAT_NO />">
+                <input type='hidden' name="date" value="<TMPL_VAR NAME=DATE />">
+                <input type='hidden' name="confirmed" value="true">
+                <button type='submit' class='green-button big-button'>Save records to DB</button>
+              </FORM>
+            </TMPL_IF>
+            <FORM class="d-ib mr-med" action="phenotype2db.cgi" method="post" target="_blank">
+              <input type='hidden' name="role" value="<TMPL_VAR NAME=ROLE />">
+              <input type='hidden' name="phenotypeboxarea" value="<TMPL_VAR NAME=PHENOTYPEBOXAREA />">
+              <input type='hidden' name="pat_no" value="<TMPL_VAR NAME=PAT_NO />">
+              <input type='hidden' name="date" value="<TMPL_VAR NAME=DATE />">
+              <input type='hidden' name="export_phenopacket" value="true">
+              <button type='submit' class='green-button big-button'>Export Phenopacket</button>
+            </FORM>
+
+            <FORM class="d-ib med" action="enter_phenotype.cgi" method="post">
+              <input type="hidden" name="pat_no" value="<TMPL_VAR NAME=PAT_NO />" />
+              <input type="hidden" name="role" value="<TMPL_VAR NAME=ROLE />" />
+              <input type='hidden' name="date" value="<TMPL_VAR NAME=DATE />">
+              <input type="hidden" name="phenotypeboxarea" value="<TMPL_VAR NAME=PHENOTYPEBOXAREA />" />
+              <a href="javascript:void(0)" onclick="this.closest('form').submit();">Back</a>
+            </FORM>
+
+            <TMPL_ELSE>
+              <TMPL_IF NAME=ROLEISDOC>
+                <FORM action="manage_patients.cgi" method="post">
+                  <button type='submit' class='green-button big-button'>Patient management</button>
+                </FORM>
+
+                <TMPL_ELSE>
+                  <FORM action="previous_visits.cgi" method="post">
+                    <input type='hidden' name="pat_no" value="<TMPL_VAR NAME=PAT_NO />">
+                    <button type='submit' class='green-button big-button'>Records management</button>
+                  </FORM>
+
+              </TMPL_IF>
+        </TMPL_UNLESS>
+    </DIV>
+    </TMPL_IF>
+
+  </DIV>
+  </DIV>
+  <TMPL_INCLUDE NAME="_doculinks.tmpl" />
+</body>
+
+</HTML>

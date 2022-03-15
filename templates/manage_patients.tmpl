@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<HTML>
+  <head>
+    <TMPL_INCLUDE NAME="_header.tmpl" />
+  </head>
+
+<body>
+  <TMPL_INCLUDE NAME="_topbar.tmpl" />
+
+  <DIV class="centering-content">
+
+    <TMPL_IF NOTICE>
+      <p class="mb-med">
+        <TMPL_VAR NAME=NOTICE />
+      </p>
+    </TMPL_IF>
+    <div class="d-ilgrid gc-1 rg-lg">
+      <TABLE class="sa-table mp-table" id="table">
+
+        <TMPL_UNLESS PAT_ARR>
+          <TR class="tableHead">
+            <TH>No patients yet.</TH>
+          </TR>
+
+          <TMPL_ELSE>
+
+            <TR>
+              <TH>#</TH>
+              <TH>Patient ID</TH>
+              <TH colspan='2'>Phenotyping</TH>
+              <TH colspan='4'>Other actions</TH>
+            </TR>
+            <TMPL_LOOP PAT_ARR>
+              <TR>
+                <TD>
+                  <TMPL_VAR ROWNUM />
+                </TD>
+                <TD>
+                  <input class="invis" onchange=update(this) maxlength="8" type="text" name="external_id"
+                    data-patno="<TMPL_VAR PAT_NO />" value="<TMPL_VAR EXTERNAL_ID />" />
+                    <TMPL_IF SHAREDBY>
+                      <small>shared by <TMPL_VAR SHAREDBY></small>
+                    </TMPL_IF>
+                </TD>
+                <TD>
+                  <FORM action="enter_phenotype.cgi" method="post">
+                    <TMPL_INCLUDE NAME="_transfer.tmpl" />
+                    <button class="green-button" type="submit">Add visit</button>
+                  </FORM>
+                </TD>
+                <TD><TMPL_IF NUMBER_VISITS>
+                  <FORM action="previous_visits.cgi" method="post">
+                    <TMPL_INCLUDE NAME="_transfer.tmpl" />
+                    <button class="blue-button" type="submit">Display record</button>
+                  </FORM>
+						</TMPL_IF>
+                </TD>
+                <td>
+                  <svg class="svg-text" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"
+                    onclick="manage_patients_edit_pat(<TMPL_VAR PAT_NO>, '<TMPL_VAR EXTERNAL_ID>')">
+                    <path
+                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                  </svg>
+                </td>
+                <TD>
+                  <FORM action="del_patient.cgi" method="post">
+                    <input type="hidden" name="del_pat" value="<TMPL_VAR PAT_NO />" />
+                    <svg class="svg-text" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                    <TMPL_UNLESS OWN_PATIENT>style="background-color: blue"</TMPL_UNLESS>
+                      fill="#000000" onclick="manage_patients_del_pat(<TMPL_VAR PAT_NO>, '<TMPL_VAR EXTERNAL_ID>')">
+                      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                    </svg>
+            
+                  </FORM>
+                </TD>
+                <TD>
+                <TMPL_IF OWN_PATIENT>
+                  <svg class="svg-text" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"
+                    onclick="manage_patients_share_pat(<TMPL_VAR PAT_NO>, '<TMPL_VAR EXTERNAL_ID>')">
+                    <path
+                      d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+                  </svg>
+                  </TMPL_IF>
+                </TD>
+                <TD><TMPL_IF NUMBER_VISITS><A href="export_phenopacket.cgi?pat_no=<TMPL_VAR PAT_NO>" target="_blank">
+                    <svg class="svg-text" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                      viewBox="0 0 24 24" width="24px" fill="#000000"
+                      onclick="export_phenopacket.cgi?pat_no=<TMPL_VAR PAT_NO>">
+                      <g>
+                        <path
+                          d="M12,2C6.49,2,2,6.49,2,12s4.49,10,10,10s10-4.49,10-10S17.51,2,12,2z M11,10V7c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v3 h1.79c0.45,0,0.67,0.54,0.35,0.85l-2.79,2.79c-0.2,0.2-0.51,0.2-0.71,0l-2.79-2.79C8.54,10.54,8.76,10,9.21,10H11z M16,17H8 c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h8c0.55,0,1,0.45,1,1v0C17,16.55,16.55,17,16,17z" />
+                      </g>
+                    </svg></A></TMPL_IF>
+                </TD>
+              </TR>
+            </TMPL_LOOP>
+        </TMPL_UNLESS>
+
+      </TABLE>
+
+      <div>
+        <button class="big-button green-button" onclick='manage_patients_edit_pat(-1, "")'>New patient record</button>
+      </div>
+      <div>
+        <div>
+          <a href="export_all_phenopackets.cgi">Export all patients
+            <svg class="svg-text" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+              height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+              <g>
+                <path
+                  d="M12,2C6.49,2,2,6.49,2,12s4.49,10,10,10s10-4.49,10-10S17.51,2,12,2z M11,10V7c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v3 h1.79c0.45,0,0.67,0.54,0.35,0.85l-2.79,2.79c-0.2,0.2-0.51,0.2-0.71,0l-2.79-2.79C8.54,10.54,8.76,10,9.21,10H11z M16,17H8 c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h8c0.55,0,1,0.45,1,1v0C17,16.55,16.55,17,16,17z" />
+              </g>
+            </svg></a><br>
+        </div>
+        <div class="pt-small">
+          <a href="import_phenopacket.cgi">Import phenopackets
+            <svg class="svg-rotate svg-text" xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+              <g>
+                <path
+                  d="M12,2C6.49,2,2,6.49,2,12s4.49,10,10,10s10-4.49,10-10S17.51,2,12,2z M11,10V7c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v3 h1.79c0.45,0,0.67,0.54,0.35,0.85l-2.79,2.79c-0.2,0.2-0.51,0.2-0.71,0l-2.79-2.79C8.54,10.54,8.76,10,9.21,10H11z M16,17H8 c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h8c0.55,0,1,0.45,1,1v0C17,16.55,16.55,17,16,17z" />
+              </g>
+            </svg></a>
+        </div>
+        
+        <TMPL_IF REALUSER>
+          <div class="extra small">
+            <a href="delete_account.cgi">Delete account <TMPL_VAR NAME></a>
+          </div>
+        </TMPL_IF>
+
+      </div>
+    </div>
+  </DIV>
+
+  <div id="del_pat" class="modal-screen d-none" onclick="manage_patients_disable_modal(true)">
+    <div class="modal-content">
+      <div class="modal-inner">
+        <FORM action="delete_patient.cgi" method="post">
+          <input type="hidden" name="pat_no" value="">
+          <h2>Delete patient</h2>
+          <div class="grid gc-2 extra rg-sm ai-s">
+            <div>Patient:</div> 
+            <div class="del_pat_external_id"></div>
+            <div class="gc-s2">Do you really want to delete the patient with all related information?</div>            
+            <div class="gc-s2 history_none">No phenotyping has yet been carried out.</div>
+            <div class="gc-s2">
+              <table class="history_table">
+                <thead>
+                  <td>Records</td>
+                </thead>
+                <tbody class="history_tbody"></tbody>
+              </table>
+            </div>
+            <div class="gc-s2">
+              <button class='green-button' type='submit'>Confirm</button>
+            </div>
+            <div class="gc-s2">
+              <a href="javascript:void(0)" class="divlink" onclick="manage_patients_disable_modal()">Back</a>
+            </div>
+          </div>
+        </FORM>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit_pat" class="modal-screen d-none" onclick="manage_patients_disable_modal(true)">
+    <div class="modal-content">
+      <div class="modal-inner">
+        <form action="edit_patient.cgi" method="post">
+            <input type="hidden" name="pat_no" value="">
+            <input type="hidden" name="edit_pat_bool" value=1>
+            <h2 class="edit_pat_title">Edit patient</h2>
+            <h2 class="new_pat_title">Create patient</h2>
+          <div class="grid gc-2 extra rg-sm ai-s">
+            <div class="mt-adj-input"> Patient ID</div>
+            <div>
+              <INPUT type="text" maxlength="8" name="external_id" placeholder="Custom patient ID" required>
+                
+              <p>The ID must be 8 characters or less and <b>not</b> contain any sensitive data (date of birth, initials, name etc).</p>
+            </div>
+            <div>Sex</div>
+            <div>
+              <label><INPUT type="radio" name="sex" value="w" required> Female</label>
+              <label class="pl-small"><input class="pl-small" type="radio" name="sex" value="m"> Male</label>
+              <label class="pl-small"><input class="pl-small" type="radio" name="sex" value="other"> Other / unknown</label><BR>
+            </div>
+            <div>Parents</div>
+            <div>
+              <label><INPUT type="radio" name="consanguinity" value="false" required> Non-consanguineous parents</label><br>
+              <label><INPUT type="radio" name="consanguinity" value="true"> Consanguineous parents</label><br>
+              <label><INPUT type="radio" name="consanguinity" value=""> Unknown</label>
+            </div>
+            <div class="gc-s2">
+              <button class='green-button' type='submit'>Confirm</button>
+            </div>
+            <div class="gc-s2">
+              <a href="javascript:void(0)" class="divlink" onclick="manage_patients_disable_modal()">Back</a>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="share_pat" class="modal-screen d-none" onclick="manage_patients_disable_modal(true)">
+    <div class="modal-content">
+      <div class="modal-inner">
+        <h2>Share patient</h2>
+        <div class="grid gc-2 extra rg-sm ai-s">
+          <div>Patient:</div> 
+          <div class="share_pat_external_id"></div>
+          <div class="gc-s2 share_pat_link"></div>
+          <div class="gc-s2">To share, send the link above. A user must be logged in to add. The link is valid for 24 hours and works
+            only once.</div>
+          <div>
+            <a href="javascript:void(0)" class="divlink" onclick="manage_patients_disable_modal()">Back</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.body.addEventListener('keydown', function (e) {
+      if (e.key === "Escape") manage_patients_disable_modal();
+    });
+  </script>
+
+  <TMPL_INCLUDE NAME="_doculinks.tmpl" />
+</BODY>
+
+</HTML>

@@ -1,0 +1,30 @@
+<script>
+	// if (window.history.replaceState) window.history.replaceState(null, null, window.location.href);
+</script>
+<div class="topbar-outer">
+	<div class="topbar">
+		<DIV>
+			<A href="index.cgi">
+				<IMG class="logo" src="../sams/img/sams2.svg">
+			</A>
+		</DIV>
+		<div>
+			<h2>
+				<TMPL_VAR PAGE_TITLE />
+			</h2>
+		</div>
+		<div class="flex-center">
+				<div class="mr16">
+					<TMPL_IF NAME="REALUSER">
+						<span class="med mr-med">User: <TMPL_VAR NAME></span>
+						<a href="logout.cgi" class="mr16 med">Logout</a>
+					<TMPL_ELSE>
+						<span class="red med mr-med">Not logged in!</span>
+						<a href="logout.cgi" class="mr16 med">Log in</a>
+					</TMPL_IF>
+				</div>
+		</div>
+	</div>
+</div>
+
+

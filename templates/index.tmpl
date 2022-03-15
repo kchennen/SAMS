@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<HTML>
+  <head>
+    <TMPL_INCLUDE NAME="_header.tmpl" />
+  </head>
+
+<body class="anchor-index">
+  <div class="topbar-outer">
+    <div class="topbar">
+      <DIV>
+        <A href="index.cgi">
+          <IMG class="logo" src="../sams/img/sams2.svg">
+        </A>
+      </DIV>
+      <div>
+
+      </div>
+      <div>
+        <div class="flex-center">
+          <div class="idx-nav">
+            <a class="" id="link_home" href="#home">Home</a>
+            <a class=" ml8" id="link_register" href="#register">Register</a>
+            <a class=" ml8" id="link_api" href="#api">API</a>
+            <a class=" ml8" id="link_example" href="../sams/tutorial.html">Tutorial</a>
+            <a class=" ml8" id="link_help" href="../sams/documentation.html">Documentation</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!---------------------------------------------------------------------------------------->
+  <!-------------------------------------------------------------------------------- HOME -->
+  <section id="home" class="content">
+    <!-- ASIDE -->
+    <aside class="narrow">
+
+      <form action="enter_phenotype.cgi" method="post">
+				<button class="big-button green-button" type="submit">Phenotype a patient and create a Phenopacket</button>
+				<input  type="hidden"  name="onthefly" value="1">
+			</form>
+
+      <form action="login.cgi" method="post" class="mt-med">
+        <input type="hidden" name="withoutlogin" value="1">
+        <button class="big-button green-button" type="submit">Use SAMS without login</button>
+      </form>
+      <div class="or med"><span>OR</span></div>
+
+      <h2>Login</h2>
+
+      <div class="extra">
+        <form action="login.cgi" method="post">
+          <div class="grid ai-c gc-1 rg-sm">
+            <div class="p-rel">
+              <input class="ico-pad" type="text" placeholder="User name or email" name="email">
+              <svg class="svg-icon svg-input" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 2 24 24"
+                width="20">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+            </div>
+            <div class="p-rel">
+              <input class="ico-pad" type="password" placeholder="Password" name="password">
+              <svg class="svg-icon svg-input" xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 2 24 24"
+                width="19">
+                <path
+                  d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+              </svg>
+            </div>
+            <div class="pt-small flex jc-sb">
+              <button class="green-button" type="submit">Log in</button>
+              <button type="button" class="blue-button" onclick="location.href='#register'">Create a new account</button>
+            </div>
+            <div>
+                <small><b>By logging in you accept a cookie which will store your login. The cookie is deleted when you log off.</b></small>
+            </div>
+            <div>
+              <a class="small" href="#forgot">Forgot password?</a>
+              <a class="small" href="/sams/documentation.html#registration">Help</a>
+              <br>
+              <a class="small" href="https://teufelsberg.charite.de/Impressum.html">Imprint</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+      <h2>Symptom annotation made simple</h2>
+      <p class="extra slogan">
+        SAMS is a database and phenotyping tool for precision medicine. Physicians can enter clinical signs
+        from the <a href="https://hpo.jax.org/">Human Phenotype Ontology</a> as well complete diagnoses, and patients can be
+        involved by sharing the symptoms
+        they encounter.
+        <BR>
+        Phenotypic data can be imported, exported and shared as <A
+          href="https://www.phenopackets.org/">Phenopackets</A>.
+      </P>
+      <P class="extra slogan">
+        SAMS is focussed at – but not limited to – rare diseases. It was developed at the <a href="https://translationalgenomics.charite.de/en/research/research_group_seelow/">Charité</a> and <a href="https://www.bihealth.org/en/research/research-group/seelow-lab-bioinformatics-and-translational-genetics">Berlin Institute of Health</a>.
+      </P>
+      <p class="slogan">
+        <img class="mr-med" height="35" src="../sams/img/charite-logo.svg" />
+        <img height="35" src="../sams/img/bih-logo.svg" />
+      </p>
+      <p class="ta-r mr-large">
+
+      </p>
+    </div>
+  </section>
+  <!---------------------------------------------------------------------------------------->
+  <!---------------------------------------------------------------------------- REGISTER -->
+  <section id="register" class="content d-none">
+    <!-- ASIDE -->
+    <aside class="wide">
+      <p class="bold slogan">
+        Registration is not required for exporting phenotypes
+        as a Phenopacket or to play around. But a registration is needed to store your data.
+      </p>
+      <P class="extra slogan">
+        An account name or an email address and a self-selected password are used to
+        access your personal user account. Physicians are also asked for their name and institution.<BR>
+        Instead of an email address you can select an account name – an email address is however required to recover
+        lost passwords.
+      </P>
+      <p class="extra slogan">
+        We use session cookies which store nothing but a session ID.
+      </p>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <form id="register_form" action="register.cgi" method="post">
+        <TMPL_IF EMAIL_STATE>
+          <p>The name or email address you entered is already registered. Please log in or try again.</p>
+        </TMPL_IF>
+        <TMPL_IF ERROR>
+          <p class="red">
+            <TMPL_VAR ERROR ESCAPE=HTML>
+          </p>
+        </TMPL_IF>
+        <h2>Register new user</h2>
+        <div class="grid ai-c gc-1 extra rg-sm">
+          <div> Register as
+            <div class="d-ib">
+              <label class="pl-small">
+                <input type="radio" name="role" value="doc" required checked onchange="register_rb()">
+                Physician
+              </label>
+              <label class="pl-small">
+                <input type="radio" name="role" value="pat" required onchange="register_rb()">
+                Patient</label>
+            </div><br>&nbsp;
+          </div>
+          <input type="text" placeholder="First name" name="fname">
+          <input type="text" placeholder="Last name" name="lname">
+          <input type="text" placeholder="Clinic / department / practice" name="department">
+          <input type="text" placeholder="Account name / email" name="email" required>
+          <div id="register_sex" class="d-ib d-none med">
+            <label class=""><INPUT type="radio" name="sex" value="w"> Female </label>
+            <label class="pl-small"><INPUT type="radio" name="sex" value="m"> Male </label>
+            <label class="pl-small"><INPUT type="radio" name="sex" value="other"> Other / prefer not to say </label>
+          </div>
+          <div id="register_consanguinity" class="d-ib d-none med">
+            <label class=""><INPUT class="normal-cb" type="checkbox" name="consanguinity" value="true"> My parents are related (e.g. cousins)</label>
+          </div>
+
+          <input id="register_pw" type="password" placeholder="Password" name="password" required onkeyup='check_pw()'>
+          <input id="register_pw_rep"  type="password" placeholder="Repeat password" name="password_repeat" required  onkeyup='check_pw()'>
+          <div class="small" id="pw_repeat_msg"></div>
+
+          <!--  <input type="password" placeholder="Repeat password" name="pw_rep" required> -->
+          <div class="pt-small">
+            <button class="green-button" type="submit">Register</button>
+          </div>
+          <div>
+            <a class="small" href="javascript:void(0)" onclick="javascript:document.getElementById('register_form').reset();">Reset form</a><br>
+            <!--<A class="small" href="#dataprotection">Learn how SAMS collects and protects data.</A>-->
+            <a class="small" href="https://teufelsberg.charite.de/Impressum.html">Imprint / data protection</a>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  <!---------------------------------------------------------------------------------------->
+  <!--------------------------------------------------------------------------------- API -->
+
+  <section id="api" class="content d-none">
+    <div class="main">
+    <h2>Programmatic access to SAMS – Symptom annotation made simple</h2>
+
+    <p>The SAMS search interface can be readily integrated into hospital information systems as an HTML5 <kbd>iframe</kbd> and will return a Phenopacket. No data is stored on our server. Simply include the following code:</p>
+<pre>&#60;iframe src="https://www.genecascade.org/sams-cgi/enter_phenotype.cgi?onthefly=1"
+  style="position: fixed; top: 0px; bottom: 0px; right: 0px; width: 100%; border: none;
+    margin: 0; padding: 0; overflow: hidden; z-index: 999999; height: 100%;">
+&#60;/iframe></pre>
+<p>See an example implementation on <a target="_blank" href="https://www.genecascade.org/sams/iframe.html">this page</a>. The <kbd>style</kbd> parametes can be adjusted to fit your needs.</p>
+
+    <h2>Export of phenotyping data</h2>
+    <p>All Phenotypic data generated by any individual doctor can be exported at any time by clicking on <b>Export all patients</b> on the <a href="https://genecascade.org/sams-cgi/manage_patients.cgi">Patient management page</a>.</p>
+
+    <h2>Programmatic access to SAMS</h2>
+    <p>If you are interested sync the patient management functionality with a local patient management, please contact us at dominik.seelow (at) bih-charite.de and robin.steinhaus (at) bih-charite.de.</p>
+    </div>
+  </section>
+
+  <!---------------------------------------------------------------------------------------->
+  <!---------------------------------------------------------------------------- Tutorial -->
+
+  <section id="tutorial" class="content d-none">
+    <div class="main">
+      <!-- See tutorial.html -->
+    <div>
+  </section>
+
+
+  <!---------------------------------------------------------------------------------------->
+  <!----------------------------------------------------------------------- Documentation -->
+
+  <section id="documentation" class="content d-none">
+    <!-- MAIN -->
+    <div class="main">
+    <!-- See documentation.html -->
+    </div>
+  </section>
+
+  <!---------------------------------------------------------------------------------------->
+  <!------------------------------------------------------------------------------ FORGOT -->
+
+  <section id="forgot" class="content d-none">
+    <!-- ASIDE -->
+    <aside>
+      <h2>Reset password</h2>
+
+      <div class="extra">
+        <form action="send_password.cgi" method="post">
+          <div class="grid ai-c gc-1 rg-sm">
+            <div class="p-rel">
+              <input class="ico-pad" type="text" placeholder="Email" name="email">
+              <svg class="svg-icon svg-input" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 2 24 24"
+                width="20">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+            </div>
+            <div class="pt-small flex jc-sb">
+              <button class="green-button" type="submit">Reset password</button>
+              <button type="button" class="blue-button" onclick="location.href='#register'">Create a new account</button>
+            </div>
+            <div>
+              <a class="small" href="#home">Return to login</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <div class="main">
+      <p class="slogan">
+        If you registered an email address: No worries. Enter you email address on the right and if an account is
+        registered by that email, a new password
+        will be mailed to you.
+      </p>
+
+    </div>
+  </section>
+
+  <!---------------------------------------------------------------------------------------->
+  <!------------------------------------------------------------------------------ FORGOT -->
+
+  <section id="dataprotection" class="content d-none">
+    <!-- ASIDE -->
+    <aside>
+      <h2>Data protection</h2>
+
+      <div>
+        Hi.
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <div class="main">
+      <p>
+        Hi
+      </p>
+
+    </div>
+  </section>
+
+
+
+  <script>
+    window.onload = function () {
+      <TMPL_IF EMAIL_STATE>
+        window.location.hash = "#register";
+      </TMPL_IF>
+      <TMPL_IF ERROR>
+        window.location.hash = "#register";
+      </TMPL_IF>
+      navigatedyn();
+    }
+    window.onpopstate = function () {
+      navigatedyn();
+    }
+
+  </script>
+</body>
+
+</html>
